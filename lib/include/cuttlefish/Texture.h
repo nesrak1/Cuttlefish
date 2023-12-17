@@ -60,6 +60,7 @@ public:
 		Unknown, ///< No known format.
 
 		// Standard formats.
+		A8,
 		R4G4,         ///< RG 4 bits each.
 		R4G4B4A4,     ///< RGBA 4 bits each.
 		B4G4R4A4,     ///< BGRA 4 bits each.
@@ -75,6 +76,7 @@ public:
 		B8G8R8,       ///< BGR with 8 bits each.
 		R8G8B8A8,     ///< RGBA with 8 bits each.
 		B8G8R8A8,     ///< BGRA with 8 bits each.
+		A8R8G8B8,     ///< ARGB with 8 bits each.
 		A8B8G8R8,     ///< ABGR with 8 bits each.
 		A2R10G10B10,  ///< ARGB with 2, 10, 10, 10 bits.
 		A2B10G10R10,  ///< ABGR with 2, 10, 10, 10 bits.
@@ -86,10 +88,12 @@ public:
 		R32G32,       ///< RG with 32 bits each.
 		R32G32B32,    ///< RGB with 32 bits each.
 		R32G32B32A32, ///< RGBA with 32 bits each.
+		A32R32G32B32, ///< ARGB with 32 bits each.
 
 		// Special formats.
 		B10G11R11_UFloat, ///< BGR with 10, 11, 11 bits as unsigned floats.
 		E5B9G9R9_UFloat,  ///< BGR with 9 bits each as unsigned floats with 5 bits
+		YUY2,             ///< YUY2 format.
 
 		// Compressed formats.
 		BC1_RGB,          ///< S3TC BC1 format (DXT1) with RGB.

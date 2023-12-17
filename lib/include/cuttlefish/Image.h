@@ -203,6 +203,15 @@ public:
 	bool load(const void* data, std::size_t size, ColorSpace colorSpace = ColorSpace::Linear);
 
 	/**
+	 * @brief Loads an image from raw data in RGBA32.
+	 * @param data The data to load from.
+	 * @param size The size of the data.
+	 * @param colorSpace The color space of the image.
+	 * @return False if the image couldn't be loaded.
+	 */
+	bool loadRaw(const void* data, std::size_t size, int width, int height, ColorSpace colorSpace = ColorSpace::Linear);
+
+	/**
 	 * @brief Saves an image to a file.
 	 *
 	 * Nearly all image file formats, such as png, jpeg, etc., are supported. This will use the

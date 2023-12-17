@@ -136,6 +136,7 @@ bool Texture::isFormatValid(Format format, Type type)
 		{false, false, false, false, false, false}, // Unknown
 
 		// Standard formats
+		{true, false, false, false, false, false}, // A8 (TODO)
 		{true, false, false, false, false, false}, // R4G4
 		{true, false, false, false, false, false}, // R4G4B4A4
 		{true, false, false, false, false, false}, // B4G4R4A4
@@ -151,6 +152,7 @@ bool Texture::isFormatValid(Format format, Type type)
 		{true, false, false, false, false, false}, // B8G8R8
 		{true, true, true, true, false, false},    // R8G8B8A8
 		{true, false, false, false, false, false}, // B8G8R8A8
+		{true, false, false, false, false, false}, // A8R8G8B8 (TODO)
 		{true, false, false, false, false, false}, // A8B8G8R8
 		{true, false, true, false, false, false},  // A2R10G10B10
 		{true, false, true, false, false, false},  // A2B10G10R10
@@ -162,10 +164,12 @@ bool Texture::isFormatValid(Format format, Type type)
 		{false, false, true, true, false, true},   // R32G32
 		{false, false, true, true, false, true},   // R32G32B32
 		{false, false, true, true, false, true},   // R32G32B32A32
+		{false, false, true, true, false, true},   // A32R32G32B32 (TODO)
 
 		// Special formats.
 		{false, false, false, false, true, false}, // B10G11R11_UFloat
 		{false, false, false, false, true, false}, // E5B9G9R9_UFloat
+		{false, false, false, false, false, false},// YUY2 (TODO)
 
 		// Compressed formats.
 		{hasS3tc, false, false, false, false, false},   // BC1_RGB
@@ -235,10 +239,12 @@ bool Texture::hasNativeSRGB(Format format, Type type)
 {
 	switch (format)
 	{
+		case Format::A8:
 		case Format::R8G8B8:
 		case Format::B8G8R8:
 		case Format::R8G8B8A8:
 		case Format::B8G8R8A8:
+		case Format::A8R8G8B8:
 		case Format::A8B8G8R8:
 		case Format::BC1_RGB:
 		case Format::BC1_RGBA:
@@ -288,11 +294,13 @@ bool Texture::hasAlpha(Format format)
 		case Texture::Format::A1R5G5B5:
 		case Texture::Format::R8G8B8A8:
 		case Texture::Format::B8G8R8A8:
+		case Texture::Format::A8R8G8B8:
 		case Texture::Format::A8B8G8R8:
 		case Texture::Format::A2R10G10B10:
 		case Texture::Format::A2B10G10R10:
 		case Texture::Format::R16G16B16A16:
 		case Texture::Format::R32G32B32A32:
+		case Texture::Format::A32R32G32B32:
 		case Texture::Format::BC1_RGBA:
 		case Texture::Format::BC2:
 		case Texture::Format::BC3:
@@ -346,6 +354,7 @@ unsigned int Texture::blockWidth(Format format)
 		0,  // Unknown
 
 		// Standard formats
+		1, // A8
 		1, // R4G4
 		1, // R4G4B4A4
 		1, // B4G4R4A4
@@ -361,6 +370,7 @@ unsigned int Texture::blockWidth(Format format)
 		1, // B8G8R8
 		1, // R8G8B8A8
 		1, // B8G8R8A8
+		1, // A8R8G8B8
 		1, // A8B8G8R8
 		1, // A2R10G10B10
 		1, // A2B10G10R10
@@ -372,10 +382,12 @@ unsigned int Texture::blockWidth(Format format)
 		1, // R32G32
 		1, // R32G32B32
 		1, // R32G32B32A32
+		1, // A32R32G32B32
 
 		// Special formats.
 		1, // B10G11R11_UFloat
 		1, // E5B9G9R9_UFloat
+		1, // YUY2
 
 		// Compressed formats
 		4,  // BC1_RGB
@@ -428,6 +440,7 @@ unsigned int Texture::blockHeight(Format format)
 		0,  // Unknown
 
 		// Standard formats
+		1, // A8
 		1, // R4G4
 		1, // R4G4B4A4
 		1, // B4G4R4A4
@@ -443,6 +456,7 @@ unsigned int Texture::blockHeight(Format format)
 		1, // B8G8R8
 		1, // R8G8B8A8
 		1, // B8G8R8A8
+		1, // A8R8G8B8
 		1, // A8B8G8R8
 		1, // A2R10G10B10
 		1, // A2B10G10R10
@@ -454,10 +468,12 @@ unsigned int Texture::blockHeight(Format format)
 		1, // R32G32
 		1, // R32G32B32
 		1, // R32G32B32A32
+		1, // A32R32G32B32
 
 		// Special formats.
 		1, // B10G11R11_UFloat
 		1, // E5B9G9R9_UFloat
+		1, // YUY2
 
 		// Compressed formats
 		4,  // BC1_RGB
@@ -510,6 +526,7 @@ unsigned int Texture::blockSize(Format format)
 		0,  // Unknown
 
 		// Standard formats
+		1,  // A8
 		1,  // R4G4
 		2,  // R4G4B4A4
 		2,  // B4G4R4A4
@@ -525,6 +542,7 @@ unsigned int Texture::blockSize(Format format)
 		3,  // B8G8R8
 		4,  // R8G8B8A8
 		4,  // B8G8R8A8
+		4,  // A8R8G8B8
 		4,  // A8B8G8R8
 		4,  // A2R10G10B10
 		4,  // A2B10G10R10
@@ -536,10 +554,12 @@ unsigned int Texture::blockSize(Format format)
 		8,  // R32G32
 		12, // R32G32B32
 		16, // R32G32B32A32
+		16, // A32R32G32B32
 
 		// Special formats.
 		4, // B10G11R11_UFloat
 		4, // E5B9G9R9_UFloat
+		4, // YUY2
 
 		// Compressed formats
 		8,  // BC1_RGB
@@ -592,6 +612,7 @@ unsigned int Texture::minWidth(Format format)
 		0,  // Unknown
 
 		// Standard formats
+		1, // A8
 		1, // R4G4
 		1, // R4G4B4A4
 		1, // B4G4R4A4
@@ -607,6 +628,7 @@ unsigned int Texture::minWidth(Format format)
 		1, // B8G8R8
 		1, // R8G8B8A8
 		1, // B8G8R8A8
+		1, // A8R8G8B8
 		1, // A8B8G8R8
 		1, // A2R10G10B10
 		1, // A2B10G10R10
@@ -618,10 +640,12 @@ unsigned int Texture::minWidth(Format format)
 		1, // R32G32
 		1, // R32G32B32
 		1, // R32G32B32A32
+		1, // A32R32G32B32
 
 		// Special formats.
 		1, // B10G11R11_UFloat
 		1, // E5B9G9R9_UFloat
+		1, // YUY2
 
 		// Compressed formats
 		4,  // BC1_RGB
@@ -674,6 +698,7 @@ unsigned int Texture::minHeight(Format format)
 		0,  // Unknown
 
 		// Standard formats
+		1, // A8
 		1, // R4G4
 		1, // R4G4B4A4
 		1, // B4G4R4A4
@@ -689,6 +714,7 @@ unsigned int Texture::minHeight(Format format)
 		1, // B8G8R8
 		1, // R8G8B8A8
 		1, // B8G8R8A8
+		1, // A8R8G8B8
 		1, // A8B8G8R8
 		1, // A2R10G10B10
 		1, // A2B10G10R10
@@ -700,10 +726,12 @@ unsigned int Texture::minHeight(Format format)
 		1, // R32G32
 		1, // R32G32B32
 		1, // R32G32B32A32
+		1, // A32R32G32B32
 
 		// Special formats.
 		1, // B10G11R11_UFloat
 		1, // E5B9G9R9_UFloat
+		1, // YUY2
 
 		// Compressed formats
 		4,  // BC1_RGB

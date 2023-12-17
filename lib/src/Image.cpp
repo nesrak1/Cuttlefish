@@ -96,7 +96,7 @@ Image::Format getFormat(FIBITMAP* image)
 		case FIT_RGB16:
 			return Image::Format::RGB16;
 		case FIT_RGBA16:
-			return Image::Format::RGBA16;;
+			return Image::Format::RGBA16;
 		case FIT_RGBF:
 			return Image::Format::RGBF;
 		case FIT_RGBAF:
@@ -746,6 +746,31 @@ bool Image::load(const void* data, std::size_t size, ColorSpace colorSpace)
 
 	m_impl.reset(Impl::create(FreeImage_LoadFromMemory(format, memoryStream), colorSpace));
 	FreeImage_CloseMemory(memoryStream);
+	return m_impl != nullptr;
+}
+
+bool Image::loadRaw(const void* data, std::size_t size, int width, int height, ColorSpace colorSpace)
+{
+	reset();
+
+#if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_BGR
+	std::size_t pixels = size / 4;
+	// flip r and b components
+	std::uint8_t* pixel = (std::uint8_t*)data;
+	for (int i = 0; i < pixels; i++)
+	{
+		std::uint8_t tmp = pixel[0];
+		pixel[0] = pixel[2];
+		pixel[2] = tmp;
+		pixel += 4;
+	}
+#endif
+
+	FIBITMAP* bitmap = FreeImage_ConvertFromRawBitsEx(
+		TRUE, (BYTE*)data, FIT_BITMAP, width, height, width * 4, 
+		32, 0, 0, 0, TRUE);
+
+	m_impl.reset(Impl::create(bitmap, colorSpace));
 	return m_impl != nullptr;
 }
 
