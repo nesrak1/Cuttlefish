@@ -36,6 +36,12 @@ static std::unique_ptr<Converter> createConverter(const Texture& texture, const 
 	(void)threadCount;
 	switch (texture.format())
 	{
+		case Texture::Format::A8:
+		{
+			if (texture.type() == Texture::Type::UNorm)
+				return std::unique_ptr<Converter>(new A8Converter(image));
+			return nullptr;
+		}
 		case Texture::Format::R4G4:
 		{
 			if (texture.type() == Texture::Type::UNorm)
@@ -164,6 +170,12 @@ static std::unique_ptr<Converter> createConverter(const Texture& texture, const 
 		{
 			if (texture.type() == Texture::Type::UNorm)
 				return std::unique_ptr<Converter>(new B8G8R8A8Converter(image));
+			return nullptr;
+		}
+		case Texture::Format::A8R8G8B8:
+		{
+			if (texture.type() == Texture::Type::UNorm)
+				return std::unique_ptr<Converter>(new A8R8G8B8Converter(image));
 			return nullptr;
 		}
 		case Texture::Format::A8B8G8R8:
@@ -323,6 +335,12 @@ static std::unique_ptr<Converter> createConverter(const Texture& texture, const 
 				default:
 					return nullptr;
 			}
+		}
+		case Texture::Format::A32R32G32B32:
+		{
+			if (texture.type() == Texture::Type::Float)
+				return std::unique_ptr<Converter>(new A32R32G32B32Converter(image));
+			return nullptr;
 		}
 		case Texture::Format::B10G11R11_UFloat:
 		{

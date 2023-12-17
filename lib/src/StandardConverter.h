@@ -314,6 +314,17 @@ void HalfConverter<C>::processHardware(unsigned int x, std::uint16_t* curData, u
 
 CUTTLEFISH_END_HALF_FLOAT()
 
+class A8Converter : public StandardConverter<std::uint8_t, 1>
+{
+public:
+	explicit A8Converter(const Image& image)
+		: StandardConverter<std::uint8_t, 1>(image)
+	{
+	}
+
+	void process(unsigned int x, unsigned int, ThreadData*) override;
+};
+
 class R4G4Converter : public StandardConverter<std::uint8_t, 1>
 {
 public:
@@ -435,11 +446,33 @@ public:
 	void process(unsigned int x, unsigned int, ThreadData*) override;
 };
 
+class A8R8G8B8Converter : public StandardConverter<std::uint8_t, 4>
+{
+public:
+	explicit A8R8G8B8Converter(const Image& image)
+		: StandardConverter<std::uint8_t, 4>(image)
+	{
+	}
+
+	void process(unsigned int x, unsigned int, ThreadData*) override;
+};
+
 class A8B8G8R8Converter : public StandardConverter<std::uint8_t, 4>
 {
 public:
 	explicit A8B8G8R8Converter(const Image& image)
 		: StandardConverter<std::uint8_t, 4>(image)
+	{
+	}
+
+	void process(unsigned int x, unsigned int, ThreadData*) override;
+};
+
+class A32R32G32B32Converter : public StandardConverter<std::uint32_t, 4>
+{
+public:
+	explicit A32R32G32B32Converter(const Image& image)
+		: StandardConverter<std::uint32_t, 4>(image)
 	{
 	}
 

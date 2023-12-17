@@ -19,6 +19,27 @@
 namespace cuttlefish
 {
 
+void A8Converter::process(unsigned int x, unsigned int, ThreadData*)
+{
+	std::uint8_t* curData = reinterpret_cast<std::uint8_t*>(data().data()) + x * batchSize;
+	unsigned int row = x * batchSize / image().width();
+	const ColorRGBAf* scanline = reinterpret_cast<const ColorRGBAf*>(image().scanline(row));
+	for (unsigned int i = 0; i < batchSize; ++i)
+	{
+		unsigned int curRow = (x * batchSize + i) / image().width();
+		if (curRow != row)
+		{
+			if (curRow >= image().height())
+				break;
+			row = curRow;
+			scanline = reinterpret_cast<const ColorRGBAf*>(image().scanline(row));
+		}
+
+		unsigned int col = (x * batchSize + i) % image().width();
+		curData[i] = static_cast<std::uint8_t>(std::round(clamp(scanline[col].a, 0.0f, 1.0f) * 0xFF));
+	}
+}
+
 void R4G4Converter::process(unsigned int x, unsigned int, ThreadData*)
 {
 	std::uint8_t* curData = reinterpret_cast<std::uint8_t*>(data().data()) + x*batchSize;
@@ -294,6 +315,34 @@ void B8G8R8A8Converter::process(unsigned int x, unsigned int, ThreadData*)
 	}
 }
 
+void A8R8G8B8Converter::process(unsigned int x, unsigned int, ThreadData*)
+{
+	std::uint8_t* curData = reinterpret_cast<std::uint8_t*>(data().data()) + x * batchSize * 4;
+	unsigned int row = x * batchSize / image().width();
+	const ColorRGBAf* scanline = reinterpret_cast<const ColorRGBAf*>(image().scanline(row));
+	for (unsigned int i = 0; i < batchSize; ++i)
+	{
+		unsigned int curRow = (x * batchSize + i) / image().width();
+		if (curRow != row)
+		{
+			if (curRow >= image().height())
+				break;
+			row = curRow;
+			scanline = reinterpret_cast<const ColorRGBAf*>(image().scanline(row));
+		}
+
+		unsigned int col = (x * batchSize + i) % image().width();
+		curData[i * 4] = static_cast<std::uint8_t>(
+			std::round(clamp(scanline[col].a, 0.0f, 1.0f) * 0xFF));
+		curData[i * 4 + 1] = static_cast<std::uint8_t>(
+			std::round(clamp(scanline[col].r, 0.0f, 1.0f) * 0xFF));
+		curData[i * 4 + 2] = static_cast<std::uint8_t>(
+			std::round(clamp(scanline[col].g, 0.0f, 1.0f) * 0xFF));
+		curData[i * 4 + 3] = static_cast<std::uint8_t>(
+			std::round(clamp(scanline[col].b, 0.0f, 1.0f) * 0xFF));
+	}
+}
+
 void A8B8G8R8Converter::process(unsigned int x, unsigned int, ThreadData*)
 {
 	std::uint8_t* curData = reinterpret_cast<std::uint8_t*>(data().data()) + x*batchSize*4;
@@ -319,6 +368,30 @@ void A8B8G8R8Converter::process(unsigned int x, unsigned int, ThreadData*)
 			std::round(clamp(scanline[col].g, 0.0f, 1.0f)*0xFF));
 		curData[i*4 + 3] = static_cast<std::uint8_t>(
 			std::round(clamp(scanline[col].r, 0.0f, 1.0f)*0xFF));
+	}
+}
+
+void A32R32G32B32Converter::process(unsigned int x, unsigned int, ThreadData*)
+{
+	float* curData = reinterpret_cast<float*>(data().data()) + x * batchSize * 4;
+	unsigned int row = x * batchSize / image().width();
+	const ColorRGBAf* scanline = reinterpret_cast<const ColorRGBAf*>(image().scanline(row));
+	for (unsigned int i = 0; i < batchSize; ++i)
+	{
+		unsigned int curRow = (x * batchSize + i) / image().width();
+		if (curRow != row)
+		{
+			if (curRow >= image().height())
+				break;
+			row = curRow;
+			scanline = reinterpret_cast<const ColorRGBAf*>(image().scanline(row));
+		}
+
+		unsigned int col = (x * batchSize + i) % image().width();
+		curData[i * 4] = scanline[col].a;
+		curData[i * 4 + 1] = scanline[col].r;
+		curData[i * 4 + 2] = scanline[col].g;
+		curData[i * 4 + 3] = scanline[col].b;
 	}
 }
 
