@@ -1,4 +1,6 @@
 /build
+/build-mac
+/build-ubuntu
 .DS_Store
 .cmake
 .idea
