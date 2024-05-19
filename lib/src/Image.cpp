@@ -753,7 +753,7 @@ bool Image::loadRaw(const void* data, std::size_t size, int width, int height, C
 {
 	reset();
 
-#if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_BGR
+#if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_RGB
 	std::size_t pixels = size / 4;
 	// flip r and b components
 	std::uint8_t* pixel = (std::uint8_t*)data;

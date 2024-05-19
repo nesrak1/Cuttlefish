@@ -203,7 +203,7 @@ public:
 	bool load(const void* data, std::size_t size, ColorSpace colorSpace = ColorSpace::Linear);
 
 	/**
-	 * @brief Loads an image from raw data in RGBA32.
+	 * @brief Loads an image from raw data in BGRA32.
 	 * @param data The data to load from.
 	 * @param size The size of the data.
 	 * @param colorSpace The color space of the image.

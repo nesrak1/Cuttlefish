@@ -1174,6 +1174,10 @@ static bool getFormatInfo(FormatInfo& info, Texture::Format format, Texture::Typ
 		case Texture::Format::R4G4:
 		case Texture::Format::A4R4G4B4:
 		case Texture::Format::B8G8R8:
+		case Texture::Format::A8:
+		case Texture::Format::A8R8G8B8:
+		case Texture::Format::A32R32G32B32:
+		case Texture::Format::YUY2:
 			return false;
 	}
 	assert(false);
