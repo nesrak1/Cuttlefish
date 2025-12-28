@@ -1,4 +1,12 @@
-cmake_minimum_required(VERSION 3.5)
+if (WIN32)
+	# Needs 3.15 for CMAKE_MSVC_RUNTIME_LIBRARY.
+	cmake_minimum_required(VERSION 3.15)
+else()
+	cmake_minimum_required(VERSION 3.10)
+endif()
+if (POLICY CMP0144)
+	cmake_policy(SET CMP0144 NEW)
+endif()
 project(Cuttlefish)
 
 # Build options
@@ -10,6 +18,7 @@ else()
 endif()
 set(CUTTLEFISH_SHARED ${CUTTLEFISH_SHARED_DEFAULT} CACHE BOOL
 	"Build Cuttlefish using shared libraries.")
+set(CUTTLEFISH_STATIC_RUNTIME OFF CACHE BOOL "Use static runtime library on Windows.")
 
 # Options for disabling portions of the build.
 set(CUTTLEFISH_BUILD_TESTS ON CACHE BOOL "Build unit tests.")
@@ -68,8 +77,8 @@ if (CUTTLEFISH_OUTPUT_DIR)
 endif()
 
 set(CUTTLEFISH_MAJOR_VERSION 2)
-set(CUTTLEFISH_MINOR_VERSION 7)
-set(CUTTLEFISH_PATCH_VERSION 5)
+set(CUTTLEFISH_MINOR_VERSION 10)
+set(CUTTLEFISH_PATCH_VERSION 0)
 set(CUTTLEFISH_VERSION ${CUTTLEFISH_MAJOR_VERSION}.${CUTTLEFISH_MINOR_VERSION}.${CUTTLEFISH_PATCH_VERSION})
 
 set(CUTTLEFISH_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})

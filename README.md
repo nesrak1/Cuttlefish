@@ -22,7 +22,7 @@ Features include:
 
 The following software is required to build Cuttlefish:
 
-* [CMake](https://cmake.org/) 3.1 or later
+* [CMake](https://cmake.org/) 3.10 or later
 * [FreeImage](http://freeimage.sourceforge.net/) (required, included as a submodule)
 * [GLM](https://glm.g-truc.net/0.9.9/index.html) (required, included as a submodule)
 * [squish](https://sourceforge.net/projects/libsquish/) (optional, included as a submodule)
@@ -42,6 +42,8 @@ The submodules can be downloaded by running the command
 When using the BC6H and BC7 encoders, it's highly recommended to install the [ISPC](https://ispc.github.io) compiler. This will use higher quality encoders that are also faster compared to the fallback used when ISP isn't available.
 
 > **Note:** Use the `CUTTLEFISH_ISPC_PATH` CMake variable when ISPC isn't visible on the system `PATH`.
+
+> **Note:** As of this writing, the last release of PVRTexTool that supports macOS is the 2023r2 release, with both releases in 2024 not having downloads available for macOS. For now, the 2023r2 release will continue to be used to support PVRTC formats across all major platforms until either it breaks or releases resume on macOS.
 
 # Platforms
 
@@ -100,8 +102,9 @@ The following options may be used when running cmake:
 
 * `-DCMAKE_BUILD_TYPE=Debug|Release`: Building in `Debug` or `Release`. This should always be specified.
 * `-DCMAKE_INSTALL_PREFIX=path`: Sets the path to install to when running `make install`.
-* `-DCUTTLEFISH_SHARED=ON|OFF`: Set to `ON` to build with shared libraries, `OFF` to build with static libraries. Default is `OFF`.
+* `-DCUTTLEFISH_SHARED=ON|OFF`: Set to `ON` to build with shared libraries, `OFF` to build with static libraries. TDefault is the value of `BUILD_SHARED_LIBS` or `OFF`.
 * `-DCUTTLEFISH_ISPC_PATH=path`: The path to the ISPC compiler. If unset, ispc will be searched in the `PATH` or default instal location.
+* `-DCUTTLEFISH_STATIC_RUNTIME=ON|OFF`: Set to `ON` to use the static runtime library on Windows. When `OFF`, it will respect the existing value of `CMAKE_MSVC_RUNTIME_LIBRARY`, or use dynamic runtime if otherwise unset. It is not recommended to set this to `ON` when `CUTTLEFISH_SHARED` is also `ON`. Default is `OFF`.
 
 ### Enabled Builds
 
