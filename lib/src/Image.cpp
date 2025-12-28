@@ -714,29 +714,30 @@ struct Image::Impl
 		if (!image)
 			return nullptr;
 
-			if (FreeImage_GetColorType(image) == FIC_PALETTE)
-			{
-				FIBITMAP *newImage;
-				if (FreeImage_IsTransparent(image))
-					newImage = FreeImage_ConvertTo32Bits(image);
-				else
-					newImage = FreeImage_ConvertTo24Bits(image);
+		if (FreeImage_GetColorType(image) == FIC_PALETTE)
+		{
+			FIBITMAP *newImage;
+			if (FreeImage_IsTransparent(image))
+				newImage = FreeImage_ConvertTo32Bits(image);
+			else
+				newImage = FreeImage_ConvertTo24Bits(image);
 
-				FreeImage_Unload(image);
-				image = newImage;
-				if (!image)
-					return nullptr;
-			}
+			FreeImage_Unload(image);
+			image = newImage;
+			if (!image)
+				return nullptr;
+		}
 
 		if (format == Format::Invalid)
 			format = getFormat(image);
+		
 		if (format == Format::Invalid)
 		{
 			FreeImage_Unload(image);
 			return nullptr;
 		}
 
-			return new Impl(image, format, colorSpace);
+		return new Impl(image, format, colorSpace);
 	}
 
 	Impl(FIBITMAP *img, Format format, ColorSpace colorSpace)
